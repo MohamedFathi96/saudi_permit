@@ -23,7 +23,7 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Authorized([Role.USER, Role.ADMIN])
+  @Authorized([Role.USER])
   @Get('profile')
   async getProfile(@CurrentUser() user: User) {
     return this.authService.getProfile(user.id);

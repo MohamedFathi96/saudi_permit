@@ -12,6 +12,7 @@ import {
   ApiResponseHelper,
   SuccessResponse,
 } from '@/common/dto/responceHelper';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -37,6 +38,7 @@ export class AuthService {
         email: registerDto.email,
         password: hashedPassword,
         name: registerDto.name,
+        role: Role.USER,
       },
       select: {
         id: true,
@@ -112,9 +114,7 @@ export class AuthService {
       },
     });
 
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
+    if (!user) throw new UnauthorizedException('User not found');
 
     const userProfile: UserProfile = {
       id: user.id,
@@ -124,6 +124,7 @@ export class AuthService {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
+
     return ApiResponseHelper.success(
       userProfile,
       'Profile retrieved successfully',

@@ -13,12 +13,30 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String?
-  role      Role     @default(USER)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String              @id @default(uuid())
+  email              String              @unique
+  password           String
+  name               String?
+  role               Role                @default(USER)
+  isActive           Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  permitApplications PermitApplication[]
+}
+
+enum ApplicationStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+model PermitApplication {
+  id                 String            @id @default(uuid())
+  applicant_name     String
+  applicant_email    String            @db.Text
+  permit_type        String
+  application_status ApplicationStatus @default(Pending)
+  submitted_at       DateTime          @default(now())
+  userId             String?
+  user               User?             @relation(fields: [userId], references: [id])
 }

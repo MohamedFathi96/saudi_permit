@@ -9,8 +9,8 @@ export const Authorized = (roleOrRoles?: Role | Role[]) => {
     authorizedRoles = Array.isArray(roleOrRoles) ? roleOrRoles : [roleOrRoles];
 
   return applyDecorators(
-    SetMetadata(ROLES_KEY, authorizedRoles),
     SetMetadata('authorization', true),
+    SetMetadata(ROLES_KEY, authorizedRoles),
     ApiBearerAuth('JWT-auth'),
   );
 };
