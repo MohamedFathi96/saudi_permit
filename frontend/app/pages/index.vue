@@ -1,3 +1,7 @@
 <template>
-  <div>welcome page</div>
+  <DashboardPage />
 </template>
+
+<script setup lang="ts">
+import DashboardPage from "~/features/applications/pages/DashboardPage.vue";
+</script>
