@@ -11,9 +11,16 @@
   },
   "dependencies": {
     "@nuxt/eslint": "1.11.0",
+    "@nuxt/icon": "2.1.0",
+    "@tailwindcss/vite": "^4.1.17",
     "eslint": "^9.39.1",
     "nuxt": "^4.2.1",
+    "tailwindcss": "^4.1.17",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@iconify-json/bi": "^1.2.6",
+    "@iconify-json/mdi": "^1.2.3"
   }
 }
