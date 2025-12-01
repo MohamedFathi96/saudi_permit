@@ -6,6 +6,11 @@
       <p class="text-gray-600">Sign in to your account to continue</p>
     </div>
 
+    <!-- Error Message -->
+    <div v-if="authError" class="p-4 mb-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200">
+      {{ authError }}
+    </div>
+
     <!-- Login Form -->
     <form class="space-y-5" @submit="onSubmit">
       <div>
@@ -96,13 +101,21 @@ const [email] = defineField("email");
 const [password] = defineField("password");
 const [rememberMe] = defineField("rememberMe");
 
+const { login, error: authError } = useAuth();
+const router = useRouter();
+
 const onSubmit = handleSubmit(async (values: LoginFormData) => {
   try {
-    console.log("Login form submitted:", values);
-    // TODO: Implement login API call
-    // await loginUser(values);
+    await login({
+      email: values.email,
+      password: values.password,
+    });
+
+    // Redirect to home page after successful login
+    await router.push("/");
   } catch (error) {
     console.error("Login error:", error);
+    // Error is already stored in authError
   }
 });
 </script>

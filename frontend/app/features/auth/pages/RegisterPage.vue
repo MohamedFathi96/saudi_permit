@@ -6,6 +6,11 @@
       <p class="text-gray-600">Sign up to get started</p>
     </div>
 
+    <!-- Error Message -->
+    <div v-if="authError" class="p-4 mb-4 text-sm text-red-800 bg-red-50 rounded-lg border border-red-200">
+      {{ authError }}
+    </div>
+
     <!-- Register Form -->
     <form class="space-y-5" @submit="onSubmit">
       <div>
@@ -138,13 +143,22 @@ const [password] = defineField("password");
 const [confirmPassword] = defineField("confirmPassword");
 const [agreeToTerms] = defineField("agreeToTerms");
 
+const { register, error: authError } = useAuth();
+const router = useRouter();
+
 const onSubmit = handleSubmit(async (values: RegisterFormData) => {
   try {
-    console.log("Register form submitted:", values);
-    // TODO: Implement registration API call
-    // await registerUser(values);
+    await register({
+      email: values.email,
+      password: values.password,
+      name: values.fullName,
+    });
+
+    // Redirect to home page after successful registration
+    await router.push("/");
   } catch (error) {
     console.error("Registration error:", error);
+    // Error is already stored in authError
   }
 });
 </script>

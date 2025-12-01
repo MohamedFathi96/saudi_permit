@@ -4,12 +4,17 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/eslint", "@nuxt/icon", "@vee-validate/nuxt"],
+  modules: ["@nuxt/eslint", "@nuxt/icon", "@vee-validate/nuxt", "@pinia/nuxt"],
   css: ["~/assets/styles/main.css"],
   vite: {
     plugins: [tailwindcss()],
   },
   veeValidate: {
     autoImports: true,
+  },
+  runtimeConfig: {
+    public: {
+      backendUrl: "http://localhost:3001",
+    },
   },
 });
