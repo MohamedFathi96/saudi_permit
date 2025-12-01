@@ -78,11 +78,10 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
 import { loginSchema } from "../schemas";
 import type { LoginFormData } from "../schemas";
 
+// useForm and toTypedSchema are auto-imported by @vee-validate/nuxt module
 const { defineField, handleSubmit, errors, isSubmitting } = useForm({
   validationSchema: toTypedSchema(loginSchema),
   initialValues: {
