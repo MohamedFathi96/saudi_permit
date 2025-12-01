@@ -14,9 +14,6 @@ COPY package.json pnpm-lock.yaml ./
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-# Generate Prisma Client
-RUN pnpm exec prisma generate
-
 # Build the application
 RUN pnpm run build
 
@@ -28,14 +25,11 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 
 # Copy built application
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build /app/node_modules/@prisma ./node_modules/@prisma
-COPY prisma ./prisma
+COPY --from=build /app/.output ./.output
 
 # Expose port
-EXPOSE 3001
+EXPOSE 3000
 
 # Start the application
-CMD ["sh", "-c", "pnpm exec prisma migrate deploy && node dist/main"]
+CMD ["node", ".output/server/index.mjs"]
 

@@ -13,7 +13,53 @@ services:
       - EXTRA_CONF=log_statement='all'
     volumes:
       - "saudi_permit_postgres_data:/var/lib/postgresql"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d saudi_permit"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - saudi_permit_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    container_name: saudi_permit.backend
+    ports:
+      - 3001:3001
+    environment:
+      - PORT=3001
+      - DATABASE_URL=postgresql://root:click123@db:5432/saudi_permit?schema=public
+      - JWT_SECRET=my-secret
+      - JWT_EXPIRES_IN=604800
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - saudi_permit_network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    container_name: saudi_permit.frontend
+    ports:
+      - 3000:3000
+    environment:
+      - NUXT_PUBLIC_BACKEND_URL=http://backend:3001
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - saudi_permit_network
+    restart: unless-stopped
 
 volumes:
   saudi_permit_postgres_data:
     external: false
+
+networks:
+  saudi_permit_network:
+    driver: bridge

@@ -42,17 +42,10 @@
       </div>
 
       <!-- Actions -->
-      <div class="flex items-center space-x-2 mt-6 pt-4 border-t border-gray-100">
-        <button
-          @click="$emit('view', application.id)"
-          class="flex-1 inline-flex items-center justify-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <Icon name="mdi:eye" class="w-4 h-4" />
-          <span class="text-sm font-medium">View Details</span>
-        </button>
+      <div class="flex items-end space-x-2 mt-6 pt-4 border-t border-gray-100">
         <button
           @click="$emit('edit', application.id)"
-          class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+          class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors ml-auto"
         >
           <Icon name="mdi:pencil" class="w-4 h-4" />
         </button>
