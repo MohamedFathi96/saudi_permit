@@ -4,5 +4,8 @@
 
 <script setup lang="ts">
 import EditApplicationPage from "~/features/applications/pages/EditApplicationPage.vue";
-</script>
 
+definePageMeta({
+  middleware: "auth",
+});
+</script>

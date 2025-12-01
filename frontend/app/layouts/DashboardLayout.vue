@@ -177,10 +177,7 @@ const toggleSidebar = () => {
 };
 
 const isActive = (path: string) => {
-  if (path === "/") {
-    return route.path === "/";
-  }
-  return route.path.startsWith(path);
+  return route.path === path;
 };
 
 const handleLogout = async () => {

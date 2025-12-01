@@ -76,37 +76,45 @@
 </template>
 
 <script setup lang="ts">
+import type { PermitApplication } from "../types";
 import ApplicationCard from "../components/ApplicationCard.vue";
+import { fetchApplications, deleteApplication } from "../services";
 
 const { token } = useAuth();
 const router = useRouter();
 
-// Use useFetch for data fetching
-const {
-  data,
-  pending,
-  error: fetchError,
-  refresh,
-} = await useFetch("/api/permit-applications", {
-  headers: computed(() => ({
-    Authorization: `Bearer ${token.value}`,
-  })),
-});
+// State management
+const applications = ref<Array<PermitApplication>>([]);
+const pending = ref(true);
+const error = ref<string | null>(null);
 
-// Extract applications and error
-const applications = computed(() => {
-  return data.value?.data || [];
-});
+// Load applications
+const loadApplications = async () => {
+  if (!token.value) {
+    error.value = "Authentication required";
+    pending.value = false;
+    return;
+  }
 
-const error = computed(() => {
-  if (fetchError.value) {
-    return fetchError.value.message || "Failed to load applications";
+  try {
+    pending.value = true;
+    error.value = null;
+    applications.value = await fetchApplications(token.value);
+  } catch (err: any) {
+    error.value = err.message || "Failed to load applications";
+    console.error("Error loading applications:", err);
+  } finally {
+    pending.value = false;
   }
-  if (data.value && !data.value.success) {
-    return data.value.message || "Failed to load applications";
-  }
-  return null;
-});
+};
+
+// Refresh function
+const refresh = async () => {
+  await loadApplications();
+};
+
+// Initial load
+await loadApplications();
 
 const handleView = (id: string) => {
   router.push(`/applications/${id}`);
@@ -121,7 +129,18 @@ const handleDelete = async (id: string) => {
     return;
   }
 
-  // TODO: Implement delete functionality
-  console.log("Delete application:", id);
+  if (!token.value) {
+    error.value = "Authentication required";
+    return;
+  }
+
+  try {
+    await deleteApplication(id, token.value);
+    // Remove from local state
+    applications.value = applications.value.filter((app) => app.id !== id);
+  } catch (err: any) {
+    error.value = err.message || "Failed to delete application";
+    console.error("Error deleting application:", err);
+  }
 };
 </script>
