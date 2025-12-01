@@ -14,7 +14,7 @@ import {
   ApiResponseHelper,
   SuccessResponse,
 } from '@/common/dto/responceHelper';
-import { Role } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 
 @Injectable()
 export class PermitApplicationService {
@@ -34,19 +34,16 @@ export class PermitApplicationService {
     });
 
     return ApiResponseHelper.success(
-      application as PermitApplicationResponse,
+      application,
       'Permit application created successfully',
       201,
     );
   }
 
   async findAll(
-    userId?: string,
-    userRole?: Role,
+    user: User,
   ): Promise<SuccessResponse<PermitApplicationResponse[]>> {
-    // Admins can see all applications, regular users can only see their own
-    const whereClause =
-      userRole === Role.ADMIN ? {} : { userId: userId || undefined };
+    const whereClause = user.role === Role.ADMIN ? {} : { userId: user.id };
 
     const applications = await this.prismaService.permitApplication.findMany({
       where: whereClause,
@@ -63,23 +60,16 @@ export class PermitApplicationService {
 
   async findOne(
     id: string,
-    userId?: string,
-    userRole?: Role,
+    user: User,
   ): Promise<SuccessResponse<PermitApplicationResponse>> {
     const application = await this.prismaService.permitApplication.findUnique({
       where: { id },
     });
 
-    if (!application) {
+    if (!application)
       throw new NotFoundException('Permit application not found');
-    }
 
-    // Check if user has permission to view this application
-    if (userRole !== Role.ADMIN && application.userId !== userId) {
-      throw new ForbiddenException(
-        'You do not have permission to view this application',
-      );
-    }
+    this.checkApplicationPermission(user, application, 'view');
 
     return ApiResponseHelper.success(
       application as PermitApplicationResponse,
@@ -90,24 +80,17 @@ export class PermitApplicationService {
   async update(
     id: string,
     updateDto: UpdatePermitApplicationDto,
-    userId?: string,
-    userRole?: Role,
+    user: User,
   ): Promise<SuccessResponse<PermitApplicationResponse>> {
     const existingApplication =
       await this.prismaService.permitApplication.findUnique({
         where: { id },
       });
 
-    if (!existingApplication) {
+    if (!existingApplication)
       throw new NotFoundException('Permit application not found');
-    }
 
-    // Check if user has permission to update this application
-    if (userRole !== Role.ADMIN && existingApplication.userId !== userId) {
-      throw new ForbiddenException(
-        'You do not have permission to update this application',
-      );
-    }
+    this.checkApplicationPermission(user, existingApplication, 'update');
 
     const updatedApplication =
       await this.prismaService.permitApplication.update({
@@ -148,11 +131,7 @@ export class PermitApplicationService {
     );
   }
 
-  async remove(
-    id: string,
-    userId?: string,
-    userRole?: Role,
-  ): Promise<SuccessResponse<null>> {
+  async remove(id: string, user: User): Promise<SuccessResponse<null>> {
     const existingApplication =
       await this.prismaService.permitApplication.findUnique({
         where: { id },
@@ -162,12 +141,7 @@ export class PermitApplicationService {
       throw new NotFoundException('Permit application not found');
     }
 
-    // Check if user has permission to delete this application
-    if (userRole !== Role.ADMIN && existingApplication.userId !== userId) {
-      throw new ForbiddenException(
-        'You do not have permission to delete this application',
-      );
-    }
+    this.checkApplicationPermission(user, existingApplication, 'delete');
 
     await this.prismaService.permitApplication.delete({
       where: { id },
@@ -177,5 +151,17 @@ export class PermitApplicationService {
       null,
       'Permit application deleted successfully',
     );
+  }
+
+  private checkApplicationPermission(
+    user: User,
+    application: { userId: string | null },
+    action: string = 'access',
+  ): void {
+    if (user.role !== Role.ADMIN && application.userId !== user.id) {
+      throw new ForbiddenException(
+        `You do not have permission to ${action} this application`,
+      );
+    }
   }
 }

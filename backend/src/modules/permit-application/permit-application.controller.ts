@@ -47,7 +47,7 @@ export class PermitApplicationController {
       'Admins can see all applications, regular users can only see their own',
   })
   findAll(@CurrentUser() user: User) {
-    return this.permitApplicationService.findAll(user.id, user.role);
+    return this.permitApplicationService.findAll(user);
   }
 
   @Authorized([Role.USER, Role.ADMIN])
@@ -59,10 +59,10 @@ export class PermitApplicationController {
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   findOne(@Param('id') id: string, @CurrentUser() user: User) {
-    return this.permitApplicationService.findOne(id, user.id, user.role);
+    return this.permitApplicationService.findOne(id, user);
   }
 
-  @Authorized([Role.USER])
+  @Authorized([Role.USER, Role.ADMIN])
   @Patch(':id')
   @ApiOperation({
     summary: 'Update permit application details',
@@ -83,8 +83,7 @@ export class PermitApplicationController {
     return this.permitApplicationService.update(
       id,
       updatePermitApplicationDto,
-      user.id,
-      user.role,
+      user,
     );
   }
 
@@ -121,6 +120,6 @@ export class PermitApplicationController {
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   remove(@Param('id') id: string, @CurrentUser() user: User) {
-    return this.permitApplicationService.remove(id, user.id, user.role);
+    return this.permitApplicationService.remove(id, user);
   }
 }
