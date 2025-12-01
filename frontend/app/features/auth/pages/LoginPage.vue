@@ -7,10 +7,26 @@
     </div>
 
     <!-- Login Form -->
-    <form class="space-y-5" @submit.prevent>
-      <Input v-model="email" label="Email Address" type="email" placeholder="Enter your email" />
+    <form class="space-y-5" @submit="onSubmit">
+      <div>
+        <UiInput
+          v-model="email"
+          label="Email Address"
+          type="email"
+          placeholder="Enter your email"
+          :error="errors.email"
+        />
+      </div>
 
-      <Input v-model="password" label="Password" type="password" placeholder="Enter your password" />
+      <div>
+        <UiInput
+          v-model="password"
+          label="Password"
+          type="password"
+          placeholder="Enter your password"
+          :error="errors.password"
+        />
+      </div>
 
       <!-- Remember Me & Forgot Password -->
       <div class="flex items-center justify-between text-sm">
@@ -26,7 +42,9 @@
       </div>
 
       <!-- Submit Button -->
-      <Button variant="secondary" size="lg" class="w-full"> Sign In </Button>
+      <UiButton type="submit" variant="secondary" size="lg" class="w-full" :disabled="isSubmitting">
+        {{ isSubmitting ? "Signing In..." : "Sign In" }}
+      </UiButton>
     </form>
 
     <!-- Divider -->
@@ -41,14 +59,14 @@
 
     <!-- Social Login -->
     <div class="grid grid-cols-2 gap-3">
-      <Button variant="outline" size="md">
+      <UiButton variant="outline" size="md">
         <Icon name="mdi:google" class="w-5 h-5 mr-2" />
         Google
-      </Button>
-      <Button variant="outline" size="md">
+      </UiButton>
+      <UiButton variant="outline" size="md">
         <Icon name="mdi:github" class="w-5 h-5 mr-2" />
         GitHub
-      </Button>
+      </UiButton>
     </div>
 
     <!-- Sign Up Link -->
@@ -60,10 +78,32 @@
 </template>
 
 <script setup lang="ts">
-import Input from "~/components/ui/Input.vue";
-import Button from "~/components/ui/Button.vue";
+import { useForm } from "vee-validate";
+import { toTypedSchema } from "@vee-validate/zod";
+import { loginSchema } from "../schemas";
+import type { LoginFormData } from "../schemas";
 
-const email = ref("");
-const password = ref("");
-const rememberMe = ref(false);
+const { defineField, handleSubmit, errors, isSubmitting } = useForm({
+  validationSchema: toTypedSchema(loginSchema),
+  initialValues: {
+    email: "",
+    password: "",
+    rememberMe: false,
+  },
+  validateOnMount: false,
+});
+
+const [email] = defineField("email");
+const [password] = defineField("password");
+const [rememberMe] = defineField("rememberMe");
+
+const onSubmit = handleSubmit(async (values: LoginFormData) => {
+  try {
+    console.log("Login form submitted:", values);
+    // TODO: Implement login API call
+    // await loginUser(values);
+  } catch (error) {
+    console.error("Login error:", error);
+  }
+});
 </script>
