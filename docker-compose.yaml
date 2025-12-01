@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  db:
+    image: "kartoza/postgis:17-3.5"
+    container_name: saudi_permit.db
+    ports:
+      - 15433:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASS=click123
+      - POSTGRES_DB=saudi_permit
+      - EXTRA_CONF=log_statement='all'
+    volumes:
+      - "saudi_permit_postgres_data:/var/lib/postgresql"
+
+volumes:
+  saudi_permit_postgres_data:
+    external: false
