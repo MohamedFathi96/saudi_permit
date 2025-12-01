@@ -17,15 +17,39 @@
 import WelcomeCard from "../components/WelcomeCard.vue";
 import StatsGrid from "../components/StatsGrid.vue";
 import RecentApplications from "../components/RecentApplications.vue";
+import { fetchApplications } from "../services";
+import { ApplicationStatus } from "../types";
 
-const { user } = useAuth();
+const { user, token } = useAuth();
 
-// TODO: Replace with actual data from API
+// Stats computed from applications
 const stats = ref({
-  total: 12,
-  approved: 8,
-  pending: 3,
-  rejected: 1,
+  total: 0,
+  approved: 0,
+  pending: 0,
+  rejected: 0,
+});
+
+// Load applications and calculate stats
+const loadStats = async () => {
+  if (!token.value) return;
+
+  try {
+    const applications = await fetchApplications(token.value);
+
+    stats.value = {
+      total: applications.length,
+      approved: applications.filter((app) => app.application_status === ApplicationStatus.Approved).length,
+      pending: applications.filter((app) => app.application_status === ApplicationStatus.Pending).length,
+      rejected: applications.filter((app) => app.application_status === ApplicationStatus.Rejected).length,
+    };
+  } catch (error) {
+    console.error("Failed to load stats:", error);
+    // Keep default values on error
+  }
+};
+
+onMounted(() => {
+  loadStats();
 });
 </script>
-
