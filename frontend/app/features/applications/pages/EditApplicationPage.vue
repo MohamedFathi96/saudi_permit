@@ -124,7 +124,7 @@ const formatDate = (date: string | Date): string => {
 };
 
 const loadApplication = async () => {
-  if (!token.value || !applicationId.value) {
+  if (!applicationId.value) {
     error.value = "Invalid request";
     return;
   }
@@ -133,7 +133,7 @@ const loadApplication = async () => {
   error.value = null;
 
   try {
-    application.value = await fetchApplicationById(applicationId.value, token.value);
+    application.value = await fetchApplicationById(applicationId.value);
   } catch (e: any) {
     error.value = e.message || "Failed to load application";
   } finally {
@@ -142,13 +142,13 @@ const loadApplication = async () => {
 };
 
 const handleSubmit = async (data: ApplicationFormData) => {
-  if (!token.value || !applicationId.value) {
+  if (!applicationId.value) {
     formRef.value?.setError("Invalid request");
     return;
   }
 
   try {
-    await updateApplication(applicationId.value, data, token.value);
+    await updateApplication(applicationId.value, data);
     
     // Show success message
     formRef.value?.setSuccess("Application updated successfully! Redirecting...");

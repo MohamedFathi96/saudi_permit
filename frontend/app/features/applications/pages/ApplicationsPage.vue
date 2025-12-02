@@ -45,7 +45,7 @@
 
       <!-- Empty State -->
       <div
-        v-else-if="!pending && !error && applications.length === 0"
+        v-else-if="!pending && !error && (!applications || applications.length === 0)"
         class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center"
       >
         <Icon name="mdi:file-document-outline" class="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -83,38 +83,29 @@ import { fetchApplications, deleteApplication } from "../services";
 const { token } = useAuth();
 const router = useRouter();
 
-// State management
-const applications = ref<Array<PermitApplication>>([]);
-const pending = ref(true);
-const error = ref<string | null>(null);
-
-// Load applications
-const loadApplications = async () => {
-  if (!token.value) {
-    error.value = "Authentication required";
-    pending.value = false;
-    return;
+const {
+  data: applications,
+  pending,
+  error: fetchError,
+  refresh,
+} = await useAsyncData<PermitApplication[]>(
+  "applications",
+  async () => {
+    return await fetchApplications();
+  },
+  {
+    // Watch token changes and refetch
+    watch: [token],
   }
+);
 
-  try {
-    pending.value = true;
-    error.value = null;
-    applications.value = await fetchApplications(token.value);
-  } catch (err: any) {
-    error.value = err.message || "Failed to load applications";
-    console.error("Error loading applications:", err);
-  } finally {
-    pending.value = false;
+// Computed error message
+const error = computed(() => {
+  if (fetchError.value) {
+    return fetchError.value.message || "Failed to load applications";
   }
-};
-
-// Refresh function
-const refresh = async () => {
-  await loadApplications();
-};
-
-// Initial load
-await loadApplications();
+  return null;
+});
 
 const handleView = (id: string) => {
   router.push(`/applications/${id}`);
@@ -129,18 +120,13 @@ const handleDelete = async (id: string) => {
     return;
   }
 
-  if (!token.value) {
-    error.value = "Authentication required";
-    return;
-  }
-
   try {
-    await deleteApplication(id, token.value);
-    // Remove from local state
-    applications.value = applications.value.filter((app) => app.id !== id);
+    await deleteApplication(id);
+    // Refresh the list after deletion
+    await refresh();
   } catch (err: any) {
-    error.value = err.message || "Failed to delete application";
     console.error("Error deleting application:", err);
+    alert(err.message || "Failed to delete application");
   }
 };
 </script>

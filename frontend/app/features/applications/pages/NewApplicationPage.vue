@@ -16,12 +16,7 @@
 
       <!-- Form Card -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
-        <ApplicationForm
-          ref="formRef"
-          mode="create"
-          @submit="handleSubmit"
-          @cancel="handleCancel"
-        />
+        <ApplicationForm ref="formRef" mode="create" @submit="handleSubmit" @cancel="handleCancel" />
       </div>
 
       <!-- Information Card -->
@@ -53,17 +48,12 @@ const router = useRouter();
 const formRef = ref<InstanceType<typeof ApplicationForm> | null>(null);
 
 const handleSubmit = async (data: ApplicationFormData) => {
-  if (!token.value) {
-    formRef.value?.setError("You must be logged in to create an application");
-    return;
-  }
-
   try {
-    await createApplication(data, token.value);
-    
+    await createApplication(data);
+
     // Show success message
     formRef.value?.setSuccess("Application created successfully! Redirecting...");
-    
+
     // Redirect to applications list after a short delay
     setTimeout(() => {
       router.push("/applications");
@@ -77,4 +67,3 @@ const handleCancel = () => {
   router.push("/applications");
 };
 </script>
-

@@ -1,8 +1,4 @@
-/**
- * Application services - Simplified to use Nuxt API routes
- * The Nuxt server routes handle communication with the backend
- */
-
+import { apiClient } from "~/libs/axios";
 import type { ApiResponse } from "#shared/types/api.type";
 import type {
   PermitApplication,
@@ -11,17 +7,8 @@ import type {
   UpdateApplicationStatusDto,
 } from "./types";
 
-/**
- * Fetch all permit applications
- * Users see only their own applications, admins see all
- */
-export const fetchApplications = async (token: string): Promise<PermitApplication[]> => {
-  const response = await $fetch<ApiResponse<PermitApplication[]>>("/api/permit-applications", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const fetchApplications = async (): Promise<PermitApplication[]> => {
+  const response = await apiClient.get<ApiResponse<PermitApplication[]>>("/permit-applications");
 
   if (response.success && response.data) {
     return response.data;
@@ -30,16 +17,8 @@ export const fetchApplications = async (token: string): Promise<PermitApplicatio
   throw new Error(response.message || "Failed to fetch applications");
 };
 
-/**
- * Fetch a single permit application by ID
- */
-export const fetchApplicationById = async (id: string, token: string): Promise<PermitApplication> => {
-  const response = await $fetch<ApiResponse<PermitApplication>>(`/api/permit-applications/${id}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const fetchApplicationById = async (id: string): Promise<PermitApplication> => {
+  const response = await apiClient.get<ApiResponse<PermitApplication>>(`/permit-applications/${id}`);
 
   if (response.success && response.data) {
     return response.data;
@@ -48,20 +27,8 @@ export const fetchApplicationById = async (id: string, token: string): Promise<P
   throw new Error(response.message || "Failed to fetch application");
 };
 
-/**
- * Create a new permit application
- */
-export const createApplication = async (
-  data: CreatePermitApplicationDto,
-  token: string
-): Promise<PermitApplication> => {
-  const response = await $fetch<ApiResponse<PermitApplication>>("/api/permit-applications", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: data,
-  });
+export const createApplication = async (data: CreatePermitApplicationDto): Promise<PermitApplication> => {
+  const response = await apiClient.post<ApiResponse<PermitApplication>>("/permit-applications", data);
 
   if (response.success && response.data) {
     return response.data;
@@ -70,21 +37,8 @@ export const createApplication = async (
   throw new Error(response.message || "Failed to create application");
 };
 
-/**
- * Update an existing permit application
- */
-export const updateApplication = async (
-  id: string,
-  data: UpdatePermitApplicationDto,
-  token: string
-): Promise<PermitApplication> => {
-  const response = await $fetch<ApiResponse<PermitApplication>>(`/api/permit-applications/${id}`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: data,
-  });
+export const updateApplication = async (id: string, data: UpdatePermitApplicationDto): Promise<PermitApplication> => {
+  const response = await apiClient.patch<ApiResponse<PermitApplication>>(`/permit-applications/${id}`, data);
 
   if (response.success && response.data) {
     return response.data;
@@ -93,21 +47,11 @@ export const updateApplication = async (
   throw new Error(response.message || "Failed to update application");
 };
 
-/**
- * Update application status (Admin only)
- */
 export const updateApplicationStatus = async (
   id: string,
-  data: UpdateApplicationStatusDto,
-  token: string
+  data: UpdateApplicationStatusDto
 ): Promise<PermitApplication> => {
-  const response = await $fetch<ApiResponse<PermitApplication>>(`/api/permit-applications/${id}/status`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: data,
-  });
+  const response = await apiClient.patch<ApiResponse<PermitApplication>>(`/permit-applications/${id}/status`, data);
 
   if (response.success && response.data) {
     return response.data;
@@ -116,16 +60,8 @@ export const updateApplicationStatus = async (
   throw new Error(response.message || "Failed to update application status");
 };
 
-/**
- * Delete a permit application
- */
-export const deleteApplication = async (id: string, token: string): Promise<void> => {
-  const response = await $fetch<ApiResponse<void>>(`/api/permit-applications/${id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const deleteApplication = async (id: string): Promise<void> => {
+  const response = await apiClient.delete<ApiResponse<void>>(`/permit-applications/${id}`);
 
   if (!response.success) {
     throw new Error(response.message || "Failed to delete application");

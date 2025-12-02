@@ -32,10 +32,8 @@ const stats = ref({
 
 // Load applications and calculate stats
 const loadStats = async () => {
-  if (!token.value) return;
-
   try {
-    const applications = await fetchApplications(token.value);
+    const applications = await fetchApplications();
 
     stats.value = {
       total: applications.length,
