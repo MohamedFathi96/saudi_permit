@@ -5,7 +5,6 @@
       :label="$t('dashboard.stats.total')"
       :count="stats.total"
       :description="$t('dashboard.stats.total')"
-      variant="blue"
     />
 
     <StatsCard
@@ -13,7 +12,6 @@
       :label="$t('dashboard.stats.approved')"
       :count="stats.approved"
       :description="$t('dashboard.stats.approved')"
-      variant="green"
     />
 
     <StatsCard
@@ -21,7 +19,6 @@
       :label="$t('dashboard.stats.pending')"
       :count="stats.pending"
       :description="$t('dashboard.stats.pending')"
-      variant="yellow"
     />
 
     <StatsCard
@@ -29,7 +26,6 @@
       :label="$t('dashboard.stats.rejected')"
       :count="stats.rejected"
       :description="$t('dashboard.stats.rejected')"
-      variant="red"
     />
   </div>
 </template>

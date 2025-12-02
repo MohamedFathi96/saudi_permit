@@ -1,11 +1,11 @@
 <template>
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-    <div class="p-6">
+    <div>
       <!-- Header with Status Badge -->
-      <div class="flex items-start justify-between mb-4">
+      <div class="flex items-start justify-between mb-4 bg-secondary text-white p-4 rounded-t-xl">
         <div class="flex-1">
-          <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ application.permit_type }}</h3>
-          <p class="text-sm text-gray-500">
+          <h3 class="text-lg font-semibold mb-1">{{ application.permit_type }}</h3>
+          <p class="text-sm">
             {{ formatDate(application.submitted_at) }}
           </p>
         </div>
@@ -15,11 +15,11 @@
       </div>
 
       <!-- Application Details -->
-      <div class="space-y-3">
+      <div class="space-y-3 p-6">
         <div :class="['flex items-start', locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2']">
           <Icon name="mdi:account" class="w-5 h-5 text-gray-400 mt-0.5" />
           <div class="flex-1">
-            <p class="text-sm text-gray-600">{{ $t('applicationCard.applicant') }}</p>
+            <p class="text-sm text-gray-600">{{ $t("applicationCard.applicant") }}</p>
             <p class="text-sm font-medium text-gray-800">{{ application.applicant_name }}</p>
           </div>
         </div>
@@ -27,7 +27,7 @@
         <div :class="['flex items-start', locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2']">
           <Icon name="mdi:email" class="w-5 h-5 text-gray-400 mt-0.5" />
           <div class="flex-1">
-            <p class="text-sm text-gray-600">{{ $t('applicationCard.email') }}</p>
+            <p class="text-sm text-gray-600">{{ $t("applicationCard.email") }}</p>
             <p class="text-sm font-medium text-gray-800">{{ application.applicant_email }}</p>
           </div>
         </div>
@@ -35,14 +35,14 @@
         <div :class="['flex items-start', locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2']">
           <Icon name="mdi:identifier" class="w-5 h-5 text-gray-400 mt-0.5" />
           <div class="flex-1">
-            <p class="text-sm text-gray-600">{{ $t('applicationCard.applicationId') }}</p>
+            <p class="text-sm text-gray-600">{{ $t("applicationCard.applicationId") }}</p>
             <p class="text-sm font-mono text-gray-800">{{ truncateId(application.id) }}</p>
           </div>
         </div>
       </div>
 
       <!-- Actions -->
-      <div class="flex items-end space-x-2 mt-6 pt-4 border-t border-gray-100">
+      <div class="flex items-end space-x-2 mt-6 pt-4 border-t border-gray-100 p-4">
         <button
           @click="$emit('edit', application.id)"
           class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors ml-auto"
@@ -63,6 +63,7 @@
 <script setup lang="ts">
 import type { PermitApplication } from "../types";
 import { ApplicationStatus } from "../types";
+import { formatDate } from "@/utils/date";
 
 const { locale } = useI18n();
 
@@ -88,17 +89,6 @@ const statusVariants = {
 const statusClasses = computed(() => {
   return statusVariants[props.application.application_status as ApplicationStatus] || "bg-gray-100 text-gray-800";
 });
-
-const formatDate = (date: string | Date): string => {
-  const d = new Date(date);
-  return d.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
 
 const truncateId = (id: string): string => {
   if (id.length <= 12) return id;

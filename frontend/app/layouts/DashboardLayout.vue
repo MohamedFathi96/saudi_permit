@@ -14,7 +14,7 @@
     >
       <!-- Logo/Brand -->
       <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-        <div :class="['flex items-center', locale === 'ar' ? 'space-x-reverse space-x-3' : 'space-x-3']">
+        <div :class="['flex items-center', locale === 'ar' ? 'space-x-reverse space-x-3 gap-2' : 'space-x-3']">
           <div class="w-8 h-8 bg-linear-to-br bg-secondary rounded-lg flex items-center justify-center">
             <Icon name="mdi:file-document-outline" class="w-5 h-5 text-white" />
           </div>
@@ -34,7 +34,7 @@
           :to="item.path"
           :class="[
             'flex items-center px-4 py-3 rounded-lg transition-all duration-200',
-            locale === 'ar' ? 'space-x-reverse space-x-3' : 'space-x-3',
+            locale === 'ar' ? 'space-x-reverse space-x-3 gap-2' : 'space-x-3 gap-2',
             isActive(item.path) ? 'bg-secondary text-white shadow-md' : 'text-gray-700 hover:bg-gray-100',
           ]"
         >
@@ -48,7 +48,7 @@
         <div
           :class="[
             'flex items-center px-4 py-3 mb-2 rounded-lg bg-gray-50',
-            locale === 'ar' ? 'space-x-reverse space-x-3' : 'space-x-3',
+            locale === 'ar' ? 'space-x-reverse space-x-3 gap-2' : 'space-x-3 gap-2',
           ]"
         >
           <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
@@ -71,7 +71,7 @@
           :disabled="isLoggingOut"
           :class="[
             'w-full flex items-center justify-center px-4 py-3 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
-            locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2',
+            locale === 'ar' ? 'space-x-reverse space-x-2 gap-2' : 'space-x-2 gap-2',
           ]"
         >
           <Icon
