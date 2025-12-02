@@ -1,0 +1,27 @@
+{
+  "dashboard": {
+    "welcome": "مرحباً بعودتك",
+    "stats": {
+      "total": "إجمالي الطلبات",
+      "approved": "مقبول",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوض"
+    },
+    "recentApplications": "الطلبات الأخيرة"
+  },
+  "layout": {
+    "appName": "تصريح السعودية",
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "applications": "الطلبات",
+      "newApplication": "طلب جديد",
+      "profile": "الملف الشخصي",
+      "settings": "الإعدادات"
+    },
+    "logout": "تسجيل الخروج",
+    "loggingOut": "جاري تسجيل الخروج...",
+    "language": "اللغة",
+    "selectLanguage": "اختر اللغة"
+  }
+}
+

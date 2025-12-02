@@ -2,33 +2,33 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
     <StatsCard
       icon="mdi:file-document-multiple"
-      label="Total"
+      :label="$t('dashboard.stats.total')"
       :count="stats.total"
-      description="Total Applications"
+      :description="$t('dashboard.stats.total')"
       variant="blue"
     />
 
     <StatsCard
       icon="mdi:check-circle"
-      label="Approved"
+      :label="$t('dashboard.stats.approved')"
       :count="stats.approved"
-      description="Approved Applications"
+      :description="$t('dashboard.stats.approved')"
       variant="green"
     />
 
     <StatsCard
       icon="mdi:clock-outline"
-      label="Pending"
+      :label="$t('dashboard.stats.pending')"
       :count="stats.pending"
-      description="Pending Review"
+      :description="$t('dashboard.stats.pending')"
       variant="yellow"
     />
 
     <StatsCard
       icon="mdi:close-circle"
-      label="Rejected"
+      :label="$t('dashboard.stats.rejected')"
       :count="stats.rejected"
-      description="Rejected Applications"
+      :description="$t('dashboard.stats.rejected')"
       variant="red"
     />
   </div>
@@ -50,4 +50,3 @@ interface Props {
 
 defineProps<Props>();
 </script>
-

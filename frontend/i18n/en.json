@@ -1,0 +1,27 @@
+{
+  "dashboard": {
+    "welcome": "Welcome back",
+    "stats": {
+      "total": "Total Applications",
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "recentApplications": "Recent Applications"
+  },
+  "layout": {
+    "appName": "Saudi Permit",
+    "nav": {
+      "dashboard": "Dashboard",
+      "applications": "Applications",
+      "newApplication": "New Application",
+      "profile": "Profile",
+      "settings": "Settings"
+    },
+    "logout": "Logout",
+    "loggingOut": "Logging out...",
+    "language": "Language",
+    "selectLanguage": "Select Language"
+  }
+}
+
