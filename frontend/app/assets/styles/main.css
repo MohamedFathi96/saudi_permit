@@ -9,4 +9,17 @@
   --color-info: #17a2b8;
   --color-light: #f8f9fa;
   --color-dark: #343a40;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Arabic locale font */
+html[lang="ar"],
+html[lang="ar-SA"] {
+  font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Default font for body */
+body {
+  font-family: var(--font-sans);
 }

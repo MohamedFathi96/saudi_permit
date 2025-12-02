@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/eslint", "@nuxt/icon", "@vee-validate/nuxt", "@pinia/nuxt", "@nuxtjs/i18n"],
+  modules: ["@nuxt/eslint", "@nuxt/icon", "@vee-validate/nuxt", "@pinia/nuxt", "@nuxtjs/i18n", "@nuxt/fonts"],
   css: ["~/assets/styles/main.css"],
   vite: {
     plugins: [tailwindcss()],
@@ -42,5 +42,14 @@ export default defineNuxtConfig({
       cookieKey: "i18n_redirected",
       redirectOn: "root",
     },
+  },
+  fonts: {
+    families: [
+      {
+        name: "IBM Plex Sans Arabic",
+        provider: "google",
+        weights: [400, 500, 600, 700],
+      },
+    ],
   },
 });
