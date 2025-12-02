@@ -1,13 +1,101 @@
 {
   "dashboard": {
     "welcome": "مرحباً بعودتك",
+    "overview": "هذه نظرة عامة على لوحة التحكم الخاصة بك. هنا يمكنك إدارة طلبات التصاريح وتتبع حالتها.",
     "stats": {
       "total": "إجمالي الطلبات",
       "approved": "مقبول",
       "pending": "قيد الانتظار",
       "rejected": "مرفوض"
     },
-    "recentApplications": "الطلبات الأخيرة"
+    "recentApplications": "الطلبات الأخيرة",
+    "latestApplications": "أحدث طلبات التصاريح الخاصة بك"
+  },
+  "applications": {
+    "title": "طلباتي",
+    "description": "عرض وإدارة طلبات التصاريح الخاصة بك",
+    "newApplication": "طلب جديد",
+    "noApplicationsYet": "لا توجد طلبات بعد",
+    "noApplicationsDescription": "ابدأ بإنشاء طلب التصريح الأول الخاص بك.",
+    "loading": "جاري تحميل الطلبات...",
+    "failedToLoad": "فشل تحميل الطلبات",
+    "retry": "إعادة المحاولة",
+    "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+    "failedToDelete": "فشل حذف الطلب"
+  },
+  "newApplication": {
+    "title": "طلب تصريح جديد",
+    "description": "املأ النموذج أدناه لتقديم طلب تصريح جديد",
+    "back": "رجوع",
+    "importantInfo": "معلومات مهمة",
+    "infoItems": {
+      "allFieldsRequired": "جميع الحقول مطلوبة لتقديم الطلب",
+      "reviewProcess": "سيتم مراجعة طلبك من قبل فريقنا",
+      "emailNotification": "سوف تتلقى إشعار بالبريد الإلكتروني بمجرد اكتمال المراجعة",
+      "processingTime": "يستغرق وقت المعالجة عادةً من 3 إلى 5 أيام عمل"
+    },
+    "successMessage": "تم إنشاء الطلب بنجاح! جاري التحويل...",
+    "errorMessage": "فشل إنشاء الطلب"
+  },
+  "editApplication": {
+    "title": "تعديل طلب التصريح",
+    "description": "تحديث تفاصيل طلب التصريح الخاص بك",
+    "back": "رجوع",
+    "status": "حالة الطلب",
+    "submitted": "تم التقديم",
+    "retry": "إعادة المحاولة",
+    "failedToLoad": "فشل تحميل الطلب",
+    "note": "ملاحظة",
+    "noteDescription": "يمكنك فقط تعديل الطلبات التي لها حالة \"قيد الانتظار\". بمجرد الموافقة أو الرفض، لا يمكن تعديل الطلبات.",
+    "successMessage": "تم تحديث الطلب بنجاح! جاري التحويل...",
+    "errorMessage": "فشل تحديث الطلب",
+    "invalidRequest": "طلب غير صالح"
+  },
+  "applicationCard": {
+    "applicant": "مقدم الطلب",
+    "email": "البريد الإلكتروني",
+    "applicationId": "رقم الطلب"
+  },
+  "applicationForm": {
+    "applicantName": "اسم مقدم الطلب",
+    "applicantNamePlaceholder": "أدخل الاسم الكامل",
+    "applicantEmail": "البريد الإلكتروني لمقدم الطلب",
+    "applicantEmailPlaceholder": "أدخل عنوان البريد الإلكتروني",
+    "permitType": "نوع التصريح",
+    "selectPermitType": "اختر نوع التصريح",
+    "permitTypes": {
+      "workPermit": "تصريح عمل",
+      "residencePermit": "تصريح إقامة",
+      "businessPermit": "تصريح أعمال",
+      "visitPermit": "تصريح زيارة",
+      "studentPermit": "تصريح طالب",
+      "transitPermit": "تصريح عبور"
+    },
+    "required": "مطلوب",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "createApplication": "إنشاء الطلب",
+    "updateApplication": "تحديث الطلب",
+    "creating": "جاري الإنشاء...",
+    "updating": "جاري التحديث..."
+  },
+  "applicationStatus": {
+    "pending": "قيد الانتظار",
+    "approved": "مقبول",
+    "rejected": "مرفوض"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "back": "رجوع",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "submit": "إرسال",
+    "retry": "إعادة المحاولة"
   },
   "layout": {
     "appName": "تصريح السعودية",

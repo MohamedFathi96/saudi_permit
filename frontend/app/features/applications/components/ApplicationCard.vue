@@ -10,32 +10,32 @@
           </p>
         </div>
         <span :class="statusClasses" class="px-3 py-1 rounded-full text-xs font-medium">
-          {{ application.application_status }}
+          {{ $t(`applicationStatus.${application.application_status.toLowerCase()}`) }}
         </span>
       </div>
 
       <!-- Application Details -->
       <div class="space-y-3">
-        <div class="flex items-start space-x-2">
+        <div :class="['flex items-start', locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2']">
           <Icon name="mdi:account" class="w-5 h-5 text-gray-400 mt-0.5" />
           <div class="flex-1">
-            <p class="text-sm text-gray-600">Applicant</p>
+            <p class="text-sm text-gray-600">{{ $t('applicationCard.applicant') }}</p>
             <p class="text-sm font-medium text-gray-800">{{ application.applicant_name }}</p>
           </div>
         </div>
 
-        <div class="flex items-start space-x-2">
+        <div :class="['flex items-start', locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2']">
           <Icon name="mdi:email" class="w-5 h-5 text-gray-400 mt-0.5" />
           <div class="flex-1">
-            <p class="text-sm text-gray-600">Email</p>
+            <p class="text-sm text-gray-600">{{ $t('applicationCard.email') }}</p>
             <p class="text-sm font-medium text-gray-800">{{ application.applicant_email }}</p>
           </div>
         </div>
 
-        <div class="flex items-start space-x-2">
+        <div :class="['flex items-start', locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2']">
           <Icon name="mdi:identifier" class="w-5 h-5 text-gray-400 mt-0.5" />
           <div class="flex-1">
-            <p class="text-sm text-gray-600">Application ID</p>
+            <p class="text-sm text-gray-600">{{ $t('applicationCard.applicationId') }}</p>
             <p class="text-sm font-mono text-gray-800">{{ truncateId(application.id) }}</p>
           </div>
         </div>
@@ -63,6 +63,8 @@
 <script setup lang="ts">
 import type { PermitApplication } from "../types";
 import { ApplicationStatus } from "../types";
+
+const { locale } = useI18n();
 
 interface Props {
   application: PermitApplication;

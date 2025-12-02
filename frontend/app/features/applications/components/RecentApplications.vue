@@ -2,12 +2,12 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200">
     <div class="p-6 border-b border-gray-200">
       <h3 class="text-lg font-semibold text-gray-800">{{ $t('dashboard.recentApplications') }}</h3>
-      <p class="text-sm text-gray-600 mt-1">Your latest permit applications</p>
+      <p class="text-sm text-gray-600 mt-1">{{ $t('dashboard.latestApplications') }}</p>
     </div>
     <div class="p-6">
       <div class="text-center py-8 text-gray-500">
         <Icon name="mdi:file-document-outline" class="w-12 h-12 mx-auto mb-3 opacity-50" />
-        <p>No applications yet. Start by creating a new application.</p>
+        <p>{{ $t('applications.noApplicationsDescription') }}</p>
         <NuxtLink
           to="/applications/new"
           :class="[

@@ -4,14 +4,17 @@
       <!-- Header -->
       <div class="mb-8">
         <button
-          class="inline-flex items-center text-gray-600 hover:text-gray-800 mb-4 transition-colors"
+          :class="[
+            'inline-flex items-center text-gray-600 hover:text-gray-800 mb-4 transition-colors',
+            locale === 'ar' ? 'flex-row-reverse' : ''
+          ]"
           @click="router.back()"
         >
-          <Icon name="mdi:arrow-left" class="w-5 h-5 mr-2" />
-          Back
+          <Icon :name="locale === 'ar' ? 'mdi:arrow-right' : 'mdi:arrow-left'" :class="locale === 'ar' ? 'w-5 h-5 ml-2' : 'w-5 h-5 mr-2'" />
+          {{ $t('editApplication.back') }}
         </button>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Edit Permit Application</h1>
-        <p class="text-gray-600">Update your permit application details</p>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $t('editApplication.title') }}</h1>
+        <p class="text-gray-600">{{ $t('editApplication.description') }}</p>
       </div>
 
       <!-- Loading State -->
@@ -29,15 +32,18 @@
       <!-- Error State -->
       <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-xl p-6">
         <Icon name="mdi:alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-3" />
-        <h3 class="text-lg font-semibold text-red-800 text-center mb-2">Failed to Load Application</h3>
+        <h3 class="text-lg font-semibold text-red-800 text-center mb-2">{{ $t('editApplication.failedToLoad') }}</h3>
         <p class="text-red-600 text-center mb-4">{{ error }}</p>
         <div class="flex justify-center">
           <button
-            class="inline-flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            :class="[
+              'inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors',
+              locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'
+            ]"
             @click="loadApplication"
           >
             <Icon name="mdi:refresh" class="w-5 h-5" />
-            <span>Retry</span>
+            <span>{{ $t('editApplication.retry') }}</span>
           </button>
         </div>
       </div>
@@ -47,16 +53,16 @@
         <!-- Status Badge -->
         <div class="mb-6 flex items-center justify-between pb-4 border-b border-gray-200">
           <div>
-            <p class="text-sm text-gray-600">Application Status</p>
+            <p class="text-sm text-gray-600">{{ $t('editApplication.status') }}</p>
             <span
               :class="statusClasses"
               class="inline-block mt-1 px-3 py-1 rounded-full text-xs font-medium"
             >
-              {{ application.application_status }}
+              {{ $t(`applicationStatus.${application.application_status.toLowerCase()}`) }}
             </span>
           </div>
           <div class="text-right">
-            <p class="text-sm text-gray-600">Submitted</p>
+            <p class="text-sm text-gray-600">{{ $t('editApplication.submitted') }}</p>
             <p class="text-sm font-medium text-gray-800 mt-1">{{ formatDate(application.submitted_at) }}</p>
           </div>
         </div>
@@ -72,12 +78,12 @@
 
       <!-- Information Card -->
       <div class="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-6">
-        <div class="flex items-start space-x-3">
+        <div :class="['flex items-start', locale === 'ar' ? 'space-x-reverse space-x-3' : 'space-x-3']">
           <Icon name="mdi:alert" class="w-6 h-6 text-amber-600 mt-0.5 flex-shrink-0" />
           <div>
-            <h3 class="text-sm font-semibold text-amber-900 mb-2">Note</h3>
+            <h3 class="text-sm font-semibold text-amber-900 mb-2">{{ $t('editApplication.note') }}</h3>
             <p class="text-sm text-amber-800">
-              You can only edit applications that are in "Pending" status. Once approved or rejected, applications cannot be modified.
+              {{ $t('editApplication.noteDescription') }}
             </p>
           </div>
         </div>
@@ -95,6 +101,7 @@ import { ApplicationStatus } from "../types";
 const { token } = useAuth();
 const router = useRouter();
 const route = useRoute();
+const { locale, t } = useI18n();
 const formRef = ref<InstanceType<typeof ApplicationForm> | null>(null);
 
 const application = ref(null);
@@ -125,7 +132,7 @@ const formatDate = (date: string | Date): string => {
 
 const loadApplication = async () => {
   if (!applicationId.value) {
-    error.value = "Invalid request";
+    error.value = t('editApplication.invalidRequest');
     return;
   }
 
@@ -135,7 +142,7 @@ const loadApplication = async () => {
   try {
     application.value = await fetchApplicationById(applicationId.value);
   } catch (e: any) {
-    error.value = e.message || "Failed to load application";
+    error.value = e.message || t('editApplication.failedToLoad');
   } finally {
     isLoading.value = false;
   }
@@ -143,7 +150,7 @@ const loadApplication = async () => {
 
 const handleSubmit = async (data: ApplicationFormData) => {
   if (!applicationId.value) {
-    formRef.value?.setError("Invalid request");
+    formRef.value?.setError(t('editApplication.invalidRequest'));
     return;
   }
 
@@ -151,14 +158,14 @@ const handleSubmit = async (data: ApplicationFormData) => {
     await updateApplication(applicationId.value, data);
     
     // Show success message
-    formRef.value?.setSuccess("Application updated successfully! Redirecting...");
+    formRef.value?.setSuccess(t('editApplication.successMessage'));
     
     // Redirect to applications list after a short delay
     setTimeout(() => {
       router.push("/applications");
     }, 1500);
   } catch (error: any) {
-    formRef.value?.setError(error.message || "Failed to update application");
+    formRef.value?.setError(error.message || t('editApplication.errorMessage'));
   }
 };
 

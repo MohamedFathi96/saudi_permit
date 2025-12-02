@@ -14,9 +14,9 @@
     <div>
       <UiInput
         v-model="applicant_name"
-        label="Applicant Name"
+        :label="$t('applicationForm.applicantName')"
         type="text"
-        placeholder="Enter full name"
+        :placeholder="$t('applicationForm.applicantNamePlaceholder')"
         :error="errors.applicant_name"
         required
       />
@@ -26,9 +26,9 @@
     <div>
       <UiInput
         v-model="applicant_email"
-        label="Applicant Email"
+        :label="$t('applicationForm.applicantEmail')"
         type="email"
-        placeholder="Enter email address"
+        :placeholder="$t('applicationForm.applicantEmailPlaceholder')"
         :error="errors.applicant_email"
         required
       />
@@ -37,20 +37,20 @@
     <!-- Permit Type -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">
-        Permit Type <span class="text-red-500">*</span>
+        {{ $t('applicationForm.permitType') }} <span class="text-red-500">*</span>
       </label>
       <select
         v-model="permit_type"
         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
         :class="{ 'border-red-500': errors.permit_type }"
       >
-        <option value="" disabled>Select permit type</option>
-        <option value="Work Permit">Work Permit</option>
-        <option value="Residence Permit">Residence Permit</option>
-        <option value="Business Permit">Business Permit</option>
-        <option value="Visit Permit">Visit Permit</option>
-        <option value="Student Permit">Student Permit</option>
-        <option value="Transit Permit">Transit Permit</option>
+        <option value="" disabled>{{ $t('applicationForm.selectPermitType') }}</option>
+        <option value="Work Permit">{{ $t('applicationForm.permitTypes.workPermit') }}</option>
+        <option value="Residence Permit">{{ $t('applicationForm.permitTypes.residencePermit') }}</option>
+        <option value="Business Permit">{{ $t('applicationForm.permitTypes.businessPermit') }}</option>
+        <option value="Visit Permit">{{ $t('applicationForm.permitTypes.visitPermit') }}</option>
+        <option value="Student Permit">{{ $t('applicationForm.permitTypes.studentPermit') }}</option>
+        <option value="Transit Permit">{{ $t('applicationForm.permitTypes.transitPermit') }}</option>
       </select>
       <p v-if="errors.permit_type" class="mt-1 text-sm text-red-600">
         {{ errors.permit_type }}
@@ -60,7 +60,7 @@
     <!-- Action Buttons -->
     <div class="flex items-center gap-4 pt-4">
       <UiButton type="submit" variant="secondary" size="lg" class="flex-1" :disabled="isSubmitting">
-        <Icon v-if="isSubmitting" name="mdi:loading" class="w-5 h-5 mr-2 animate-spin" />
+        <Icon v-if="isSubmitting" name="mdi:loading" :class="locale === 'ar' ? 'w-5 h-5 ml-2 animate-spin' : 'w-5 h-5 mr-2 animate-spin'" />
         {{ isSubmitting ? submitLoadingText : submitText }}
       </UiButton>
       <UiButton
@@ -71,7 +71,7 @@
         :disabled="isSubmitting"
         @click="handleCancel"
       >
-        Cancel
+        {{ $t('applicationForm.cancel') }}
       </UiButton>
     </div>
   </form>
@@ -81,6 +81,8 @@
 import { applicationSchema } from "../schemas";
 import type { ApplicationFormData } from "../schemas";
 import type { PermitApplication } from "../types";
+
+const { locale, t } = useI18n();
 
 interface Props {
   initialData?: PermitApplication | null;
@@ -117,8 +119,8 @@ const [permit_type] = defineField("permit_type");
 const formError = ref<string | null>(null);
 const successMessage = ref<string | null>(null);
 
-const submitText = computed(() => (props.mode === "create" ? "Create Application" : "Update Application"));
-const submitLoadingText = computed(() => (props.mode === "create" ? "Creating..." : "Updating..."));
+const submitText = computed(() => (props.mode === "create" ? t('applicationForm.createApplication') : t('applicationForm.updateApplication')));
+const submitLoadingText = computed(() => (props.mode === "create" ? t('applicationForm.creating') : t('applicationForm.updating')));
 
 const onSubmit = handleSubmit(async (values: ApplicationFormData) => {
   formError.value = null;

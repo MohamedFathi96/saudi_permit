@@ -4,15 +4,18 @@
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-gray-800">My Applications</h1>
-          <p class="text-gray-600 mt-1">View and manage your permit applications</p>
+          <h1 class="text-3xl font-bold text-gray-800">{{ $t('applications.title') }}</h1>
+          <p class="text-gray-600 mt-1">{{ $t('applications.description') }}</p>
         </div>
         <NuxtLink
           to="/applications/new"
-          class="inline-flex items-center space-x-2 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/80 transition-colors"
+          :class="[
+            'inline-flex items-center px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/80 transition-colors',
+            locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'
+          ]"
         >
           <Icon name="mdi:plus" class="w-5 h-5" />
-          <span>New Application</span>
+          <span>{{ $t('applications.newApplication') }}</span>
         </NuxtLink>
       </div>
 
@@ -32,14 +35,17 @@
       <!-- Error State -->
       <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
         <Icon name="mdi:alert-circle" class="w-12 h-12 text-red-500 mx-auto mb-3" />
-        <h3 class="text-lg font-semibold text-red-800 mb-2">Failed to Load Applications</h3>
+        <h3 class="text-lg font-semibold text-red-800 mb-2">{{ $t('applications.failedToLoad') }}</h3>
         <p class="text-red-600 mb-4">{{ error }}</p>
         <button
-          class="inline-flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          :class="[
+            'inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors',
+            locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'
+          ]"
           @click="() => refresh()"
         >
           <Icon name="mdi:refresh" class="w-5 h-5" />
-          <span>Retry</span>
+          <span>{{ $t('applications.retry') }}</span>
         </button>
       </div>
 
@@ -49,14 +55,17 @@
         class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center"
       >
         <Icon name="mdi:file-document-outline" class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 class="text-lg font-semibold text-gray-800 mb-2">No Applications Yet</h3>
-        <p class="text-gray-600 mb-6">Start by creating your first permit application.</p>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ $t('applications.noApplicationsYet') }}</h3>
+        <p class="text-gray-600 mb-6">{{ $t('applications.noApplicationsDescription') }}</p>
         <NuxtLink
           to="/applications/new"
-          class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          :class="[
+            'inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors',
+            locale === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'
+          ]"
         >
           <Icon name="mdi:plus" class="w-5 h-5" />
-          <span>New Application</span>
+          <span>{{ $t('applications.newApplication') }}</span>
         </NuxtLink>
       </div>
 
@@ -82,6 +91,7 @@ import { fetchApplications, deleteApplication } from "../services";
 
 const { token } = useAuth();
 const router = useRouter();
+const { locale, t } = useI18n();
 
 const {
   data: applications,
@@ -116,7 +126,7 @@ const handleEdit = (id: string) => {
 };
 
 const handleDelete = async (id: string) => {
-  if (!confirm("Are you sure you want to delete this application?")) {
+  if (!confirm(t('applications.deleteConfirm'))) {
     return;
   }
 
@@ -126,7 +136,7 @@ const handleDelete = async (id: string) => {
     await refresh();
   } catch (err: any) {
     console.error("Error deleting application:", err);
-    alert(err.message || "Failed to delete application");
+    alert(err.message || t('applications.failedToDelete'));
   }
 };
 </script>
