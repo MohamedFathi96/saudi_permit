@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50" :dir="locale === 'ar' ? 'rtl' : 'ltr'">
+  <div class="min-h-screen bg-gray-50">
     <!-- Sidebar -->
     <aside
       :class="[
@@ -155,6 +155,12 @@
 const { user, logout } = useAuth();
 const route = useRoute();
 const { locale, locales, setLocale, t } = useI18n();
+
+useHead({
+  htmlAttrs: {
+    dir: computed(() => (locale.value === "ar" ? "rtl" : "ltr")),
+  },
+});
 
 // Sidebar state
 const isSidebarOpen = ref(false);

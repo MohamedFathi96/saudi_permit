@@ -110,6 +110,13 @@
     "loggingOut": "جاري تسجيل الخروج...",
     "language": "اللغة",
     "selectLanguage": "اختر اللغة"
+  },
+  "profile": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "role": "الدور"
+  },
+  "settings": {
+    "comingSoon": "صفحة الإعدادات قريباً..."
   }
 }
-

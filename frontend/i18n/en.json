@@ -110,6 +110,13 @@
     "loggingOut": "Logging out...",
     "language": "Language",
     "selectLanguage": "Select Language"
+  },
+  "profile": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role"
+  },
+  "settings": {
+    "comingSoon": "Settings page coming soon..."
   }
 }
-

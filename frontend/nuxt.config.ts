@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  ssr: false,
   veeValidate: {
     autoImports: true,
   },
