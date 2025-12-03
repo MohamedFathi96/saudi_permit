@@ -10,16 +10,20 @@
   --color-light: #f8f9fa;
   --color-dark: #343a40;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-ar-primary: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-en-primary: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Arabic locale font */
 html[lang="ar"],
 html[lang="ar-SA"] {
-  font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-primary: var(--font-ar-primary);
 }
 
-/* Default font for body */
+html[lang="en"],
+html[lang="en-US"] {
+  --font-primary: var(--font-en-primary);
+}
+
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-primary);
 }
